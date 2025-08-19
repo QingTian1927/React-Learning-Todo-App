@@ -1,4 +1,5 @@
 import './App.css'
+import Greeting from './components/Greeting'
 import Header from './components/Header/Header'
 
 function App() {
@@ -6,7 +7,10 @@ function App() {
     <>
       <Header />
 
-      <main></main>
+      <main>
+        <Greeting name='Yuuki' />
+        <Greeting name='Joe' />
+      </main>
     </>
   )
 }
