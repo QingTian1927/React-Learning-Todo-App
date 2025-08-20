@@ -1,20 +1,16 @@
-import './App.css'
-import Greeting from './components/Greeting'
+import AppContainer from './components/AppContainer/AppContainer'
 import Header from './components/Header/Header'
 import TodoList from './components/TodoList/TodoList'
 
 function App() {
   return (
-    <>
+    <AppContainer>
       <Header />
 
       <main>
-        <Greeting name='Yuuki' />
-        <Greeting name='Joe' />
-
         <TodoList />
       </main>
-    </>
+    </AppContainer>
   )
 }
 

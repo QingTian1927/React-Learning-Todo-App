@@ -1,1 +1,33 @@
 @import 'tailwindcss';
+
+.text {
+  @apply text-stone-800;
+}
+
+.text-invert {
+  @apply text-stone-50;
+}
+
+.text-accent {
+  @apply text-orange-300 placeholder:text-stone-400;
+}
+
+.bg-invert {
+  @apply bg-stone-900;
+}
+
+.bg {
+  @apply bg-orange-50;
+}
+
+.bg-light-contrast {
+  @apply bg-orange-200;
+}
+
+.outline-accent {
+  @apply outline-offset-2 outline-orange-400 focus:outline-3;
+}
+
+.caret-accent {
+  @apply caret-orange-400;
+}
