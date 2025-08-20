@@ -1,4 +1,5 @@
 import { type Todo } from '../../types/Todo'
+import TaskActions from './TaskActions'
 
 type TodoItemProps = {
   todo: Todo
@@ -25,6 +26,8 @@ export default function TodoItem({ todo }: TodoItemProps) {
       <p>{todo.dueDate.toString()}</p>
       <p>{todo.priority}</p>
       <p>{statusIcon}</p>
+
+      <TaskActions todoId={todo.id} />
     </article>
   )
 }

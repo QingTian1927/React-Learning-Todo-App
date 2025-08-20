@@ -34,9 +34,9 @@ export default function TodoList() {
 
   return (
     <section className='grid grid-cols-1 gap-5'>
-      <TodoItem todo={todos[0]} />
-      <TodoItem todo={todos[1]} />
-      <TodoItem todo={todos[2]} />
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
     </section>
   )
 }
