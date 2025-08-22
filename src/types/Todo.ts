@@ -16,3 +16,6 @@ export type Todo = {
   status: 'Not Started' | 'In Progress' | 'Completed'
   tags: string[]
 }
+
+export const statuses = ['Not Started', 'In Progress', 'Completed'] as const
+export type Status = (typeof statuses)[number]
