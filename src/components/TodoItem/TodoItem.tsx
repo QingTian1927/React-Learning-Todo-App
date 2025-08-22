@@ -1,5 +1,6 @@
 import { type Todo } from '../../types/Todo'
 import TaskActions from './TaskActions'
+import TaskDetails from './TaskDetails'
 
 type TodoItemProps = {
   todo: Todo
