@@ -21,7 +21,27 @@
 }
 
 .bg-light-contrast {
-  @apply bg-orange-200;
+  @apply bg-orange-100;
+}
+
+.bg-low-priority {
+  @apply bg-orange-100;
+}
+
+.bg-medium-priority {
+  @apply bg-orange-300;
+}
+
+.bg-high-priority {
+  @apply bg-red-300;
+}
+
+.bg-critical-priority {
+  @apply bg-red-400;
+}
+
+.bg-todo-status {
+  @apply bg-red-100;
 }
 
 .outline-accent {
