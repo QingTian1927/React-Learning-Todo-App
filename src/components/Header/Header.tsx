@@ -9,7 +9,7 @@ function getCurrentTime(): string {
 
 export default function Header() {
   return (
-    <header className='flex min-h-[10svh] w-full items-center justify-between gap-2 rounded-md'>
+    <header className='mb-5 flex min-h-[10svh] w-full items-center justify-between gap-2 rounded-md'>
       <HeaderTitle time={getCurrentTime()} />
       <FilterBar />
       <ViewSwitcher />
