@@ -5,5 +5,5 @@ type AppContainerProps = {
 }
 
 export default function AppContainer({ children }: AppContainerProps) {
-  return <div className='bg text caret-accent min-h-svh w-svw p-5'>{children}</div>
+  return <div className='bg text min-h-svh w-svw p-5'>{children}</div>
 }

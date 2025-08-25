@@ -1,7 +1,19 @@
 @import 'tailwindcss';
 
+html {
+  @apply caret-orange-400 selection:bg-orange-300;
+}
+
+input {
+  @apply placeholder:text-stone-400;
+}
+
 .text {
   @apply text-stone-800;
+}
+
+.text-dimmed {
+  @apply text-stone-400;
 }
 
 .text-invert {
@@ -22,6 +34,14 @@
 
 .bg-light-contrast {
   @apply bg-orange-100;
+}
+
+.bg-light-contrast-dimmed {
+  @apply bg-orange-200;
+}
+
+.bg-overlay {
+  @apply bg-stone-800/80;
 }
 
 .bg-low-priority {
@@ -48,6 +68,22 @@
   @apply outline-offset-2 outline-orange-400 focus:outline-3;
 }
 
-.caret-accent {
-  @apply caret-orange-400;
+.warning-btn {
+  @apply cursor-pointer bg-orange-600 hover:bg-orange-700;
+}
+
+.danger-btn {
+  @apply cursor-pointer bg-rose-600 hover:bg-rose-700;
+}
+
+.add-todo-btn {
+  @apply cursor-pointer bg-orange-200 hover:bg-orange-300;
+}
+
+.btn-invert {
+  @apply cursor-pointer bg-stone-900 text-stone-50 hover:bg-stone-700;
+}
+
+.btn-x-invert {
+  @apply cursor-pointer text-stone-50 hover:text-orange-300;
 }
