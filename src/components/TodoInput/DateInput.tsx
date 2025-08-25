@@ -13,7 +13,13 @@ export default function DateInput({ name, onChange }: TextInputProps) {
   return (
     <label className='flex w-full flex-col gap-1'>
       <span className='font-medium'>{fieldTitle}</span>
-      <input className='bg-light-contrast rounded-md p-2' id={name} name={name} type='date' onChange={handleChange} />
+      <input
+        className='bg-pastel-teal-light text-pastel-teal-dark border-pastel-teal-light rounded-md border p-2 font-semibold'
+        id={name}
+        name={name}
+        type='date'
+        onChange={handleChange}
+      />
     </label>
   )
 }

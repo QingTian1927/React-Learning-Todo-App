@@ -15,7 +15,12 @@ export default function SelectInput({ name, items, onChange }: SelectInputProps)
     <label className='flex w-full flex-col gap-1'>
       <span className='font-medium'>{fieldTitle}</span>
 
-      <select className='bg-light-contrast rounded-md p-2' id={name} name={name} onChange={handleChange}>
+      <select
+        className='bg-pastel-teal-light text-pastel-teal-dark border-pastel-teal-light rounded-md border p-2 font-semibold'
+        id={name}
+        name={name}
+        onChange={handleChange}
+      >
         {items.map((item) => (
           <option value={item} key={item}>
             {item}

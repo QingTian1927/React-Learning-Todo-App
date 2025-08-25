@@ -41,15 +41,15 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
   }
 
   return (
-    <div className='bg-overlay fixed top-0 left-0 z-10 flex size-full items-center justify-center'>
-      <form className='bg flex min-h-2/3 min-w-1/2 flex-col items-center rounded-xl p-5'>
+    <div className='bg-pastel-gray-dark-transparent text-pastel-gray-dark fixed top-0 left-0 z-10 flex size-full items-center justify-center'>
+      <form className='bg-pastel-white flex min-h-2/3 min-w-1/2 flex-col items-center rounded-xl p-5'>
         <div className='mb-10 flex w-full items-center justify-between'>
           <h2 className='text-2xl font-bold'>{todo ? 'Edit Task' : 'Add New Task'}</h2>
 
           <button
             type='button'
             onClick={handleCloseButton}
-            className='btn-invert flex aspect-square h-full items-center justify-center rounded-lg p-2.5'
+            className='bg-pastel-turquoise text-pastel-gray-dark hover:bg-pastel-teal-dark flex aspect-square h-full cursor-pointer items-center justify-center rounded-lg p-2.5'
           >
             <i className='bi bi-x-lg'></i>
           </button>
@@ -74,7 +74,11 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
           <TagInput onTagAdd={handleAddTag} />
         </div>
 
-        <button onClick={handleSubmitForm} type='button' className='btn-invert min-w-[5em] rounded-md p-2 text-lg'>
+        <button
+          onClick={handleSubmitForm}
+          type='button'
+          className='bg-pastel-pink text-pastel-white hover:bg-pastel-pink-light min-w-[5em] cursor-pointer rounded-md p-2 text-lg font-semibold'
+        >
           Save
         </button>
       </form>

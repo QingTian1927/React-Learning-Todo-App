@@ -18,7 +18,7 @@ export default function TextInput({ name, placeholder, onChange, isLongText = fa
       <span className='font-medium'>{fieldTitle}</span>
       {isLongText ? (
         <textarea
-          className='bg-light-contrast min-h-36 rounded-md p-2'
+          className='bg-pastel-white text-pastel-gray-dark border-pastel-turquoise outline-pastel-turquoise focus:outline-pastel-teal-dark placeholder:text-pastel-gray-medium min-h-36 rounded-md border-2 p-2'
           id={name}
           name={name}
           placeholder={placeholderText}
@@ -26,7 +26,7 @@ export default function TextInput({ name, placeholder, onChange, isLongText = fa
         />
       ) : (
         <input
-          className='bg-light-contrast rounded-md p-2'
+          className='bg-pastel-white text-pastel-gray-dark border-pastel-turquoise outline-pastel-turquoise focus:outline-pastel-teal-dark placeholder:text-pastel-gray-medium rounded-md border-2 p-2'
           id={name}
           name={name}
           type='text'

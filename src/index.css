@@ -1,89 +1,32 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-pastel-turquoise: #8accd5;
+  --color-pastel-pink: #ff90bb;
+  --color-pastel-pink-hover: #ff7ab0;
+  --color-pastel-pink-light: #ffc1da;
+  --color-pastel-teal-dark: #6b9ba3;
+  --color-pastel-teal-light: rgba(138, 204, 213, 0.1);
+  --color-pastel-teal-medium: rgba(138, 204, 213, 0.2);
+  --color-pastel-cream: #f8f8e1;
+  --color-pastel-white: #ffffff;
+  --color-pastel-gray-dark: #333333;
+  --color-pastel-gray-medium: #666666;
+  --color-pastel-gray-dark-transparent: rgba(51, 51, 51, 0.8);
+}
+
 html {
-  @apply caret-orange-400 selection:bg-orange-300;
+  @apply caret-pastel-turquoise selection:bg-pastel-turquoise;
 }
 
 input {
-  @apply placeholder:text-stone-400;
-}
-
-.text {
-  @apply text-stone-800;
-}
-
-.text-dimmed {
-  @apply text-stone-400;
-}
-
-.text-invert {
-  @apply text-stone-50;
-}
-
-.text-accent {
-  @apply text-orange-300 placeholder:text-stone-400;
-}
-
-.bg-invert {
-  @apply bg-stone-900;
-}
-
-.bg {
-  @apply bg-orange-50;
-}
-
-.bg-light-contrast {
-  @apply bg-orange-100;
-}
-
-.bg-light-contrast-dimmed {
-  @apply bg-orange-200;
-}
-
-.bg-overlay {
-  @apply bg-stone-800/80;
-}
-
-.bg-low-priority {
-  @apply bg-orange-100;
-}
-
-.bg-medium-priority {
-  @apply bg-orange-300;
-}
-
-.bg-high-priority {
-  @apply bg-red-300;
-}
-
-.bg-critical-priority {
-  @apply bg-red-400;
-}
-
-.bg-todo-status {
-  @apply bg-red-100;
-}
-
-.outline-accent {
-  @apply outline-offset-2 outline-orange-400 focus:outline-3;
+  @apply placeholder:text-pastel-gray-medium;
 }
 
 .warning-btn {
-  @apply cursor-pointer bg-orange-600 hover:bg-orange-700;
+  @apply bg-orange-600 hover:bg-orange-700;
 }
 
 .danger-btn {
-  @apply cursor-pointer bg-rose-600 hover:bg-rose-700;
-}
-
-.add-todo-btn {
-  @apply cursor-pointer bg-orange-200 hover:bg-orange-300;
-}
-
-.btn-invert {
-  @apply cursor-pointer bg-stone-900 text-stone-50 hover:bg-stone-700;
-}
-
-.btn-x-invert {
-  @apply cursor-pointer text-stone-50 hover:text-orange-300;
+  @apply bg-rose-600 hover:bg-rose-700;
 }

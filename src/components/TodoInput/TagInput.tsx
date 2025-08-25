@@ -35,7 +35,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
       <label className='flex w-full flex-col gap-1'>
         <span className='font-medium'>Tags</span>
         <input
-          className='bg-light-contrast rounded-md p-2'
+          className='bg-pastel-white text-pastel-gray-dark border-pastel-turquoise outline-pastel-turquoise focus:outline-pastel-teal-dark placeholder:text-pastel-gray-medium rounded-md border-2 p-2'
           id='tag'
           name='tag'
           type='text'
@@ -44,15 +44,18 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
         />
       </label>
 
-      <div className='bg-light-contrast flex min-h-24 flex-wrap items-start justify-start gap-2 rounded-md p-2'>
+      <div className='bg-pastel-teal-light border-pastel-teal-light text-pastel-teal-dark flex min-h-24 flex-wrap items-start justify-start gap-2 rounded-md border-2 p-2'>
         {displayTags.length > 0 ? (
           displayTags.map((tag, i) => (
-            <div className='bg-invert text-invert min-w-[4em] rounded-md px-2 py-1.5 text-center' key={i}>
+            <div
+              className='bg-pastel-teal-dark text-pastel-white min-w-[4em] rounded-md px-2 py-1.5 text-center font-medium'
+              key={i}
+            >
               <span className='mr-2'>{tag}</span>
 
               <button
                 type='button'
-                className='btn-x-invert'
+                className='text-pastel-white hover:text-pastel-gray-dark cursor-pointer'
                 onClick={() => {
                   setDisplayTags((prev) => prev.filter((otherTag) => otherTag !== tag))
                 }}
@@ -62,7 +65,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
             </div>
           ))
         ) : (
-          <span className='text-dimmed'>This task doesn't have any tags yet</span>
+          <span className='text-pastel-gray-medium'>This task doesn't have any tags yet</span>
         )}
       </div>
     </>

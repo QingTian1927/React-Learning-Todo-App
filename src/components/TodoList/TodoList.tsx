@@ -19,9 +19,9 @@ export default function TodoList({ todos, onEdit, setShowInputForm }: TodoListPr
         onClick={() => {
           setShowInputForm(true)
         }}
-        className='add-todo-btn flex cursor-pointer items-center justify-center rounded-lg p-5'
+        className='group border-pastel-turquoise hover:border-pastel-teal-dark flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-5'
       >
-        <span className='text-5xl font-bold'>
+        <span className='text-pastel-turquoise group-hover:text-pastel-teal-dark text-4xl font-bold'>
           <i className='bi bi-plus-lg'></i>
         </span>
       </button>
