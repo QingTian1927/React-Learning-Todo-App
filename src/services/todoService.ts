@@ -43,8 +43,8 @@ async function createTodo(todo: Omit<Todo, 'id'>): Promise<Todo> {
     throw new Error(`Failed to create todo: ${response.statusText}`)
   }
 
-  const result: ApiResponse<Todo> = await response.json()
-  const newTodo = { ...result.data, dueDate: new Date(result.data.dueDate) }
+  const result: ApiResponse<TodoResponse> = await response.json()
+  const newTodo = { ...result.data, dueDate: new Date(result.data.dueDate), id: result.data._id }
   return newTodo
 }
 
@@ -58,8 +58,24 @@ async function deleteTodo(id: string) {
   }
 }
 
+async function updateTodo(id: string, todo: Partial<Omit<Todo, 'id'>>): Promise<Todo> {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(todo)
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to update: todo: ${response.statusText}`)
+  }
+  const result: ApiResponse<TodoResponse> = await response.json()
+  const updatedTodo = { ...result.data, dueDate: new Date(result.data.dueDate), id: result.data._id }
+  return updatedTodo
+}
+
 export const todoService = {
   get: getTodos,
   create: createTodo,
-  delete: deleteTodo
+  delete: deleteTodo,
+  update: updateTodo
 } as const
