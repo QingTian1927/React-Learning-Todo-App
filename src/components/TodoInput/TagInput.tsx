@@ -1,33 +1,32 @@
-import { useState } from 'react'
-
 type TagInputProps = {
-  onTagAdd: (tags: string[]) => void
+  value: string[]
+  onChange: (tags: string[]) => void
 }
 
-export default function TagInput({ onTagAdd }: TagInputProps) {
-  const [displayTags, setDisplayTags] = useState<string[]>([])
-
+export default function TagInput({ value: tags, onChange }: TagInputProps) {
   function handleEnterKey(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
       e.preventDefault()
+      const input = e.currentTarget
+      const newTag = input.value.trim()
 
-      const value = e.currentTarget.value.trim()
-      if (value === '') {
+      if (!newTag) {
         alert('Tag cannot be empty! Please try again.')
         return
       }
 
-      if (displayTags.includes(value)) {
+      if (tags.includes(newTag)) {
         alert('Tag already exists! Please enter a different tag.')
         return
       }
 
-      const newTags = [...displayTags, value]
-      setDisplayTags(newTags)
-      onTagAdd(newTags)
-
-      e.currentTarget.value = ''
+      onChange([...tags, newTag])
+      input.value = ''
     }
+  }
+
+  function handleRemoveTag(removedTag: string) {
+    onChange(tags.filter((tag) => tag !== removedTag))
   }
 
   return (
@@ -45,8 +44,8 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
       </label>
 
       <div className='bg-pastel-teal-light border-pastel-teal-light text-pastel-teal-dark flex min-h-24 flex-wrap items-start justify-start gap-2 rounded-md border-2 p-2'>
-        {displayTags.length > 0 ? (
-          displayTags.map((tag, i) => (
+        {tags.length > 0 ? (
+          tags.map((tag, i) => (
             <div
               className='bg-pastel-teal-dark text-pastel-white min-w-[4em] rounded-md px-2 py-1.5 text-center font-medium'
               key={i}
@@ -57,7 +56,7 @@ export default function TagInput({ onTagAdd }: TagInputProps) {
                 type='button'
                 className='text-pastel-white hover:text-pastel-gray-dark cursor-pointer'
                 onClick={() => {
-                  setDisplayTags((prev) => prev.filter((otherTag) => otherTag !== tag))
+                  handleRemoveTag(tag)
                 }}
               >
                 <i className='bi bi-x-lg'></i>

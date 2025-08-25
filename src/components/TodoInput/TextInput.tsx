@@ -1,11 +1,20 @@
 type TextInputProps = {
   name: string
+  value: string
   placeholder?: string
   onChange: (args: { name: string; value: string }) => void
   isLongText?: boolean
+  isRequired?: boolean
 }
 
-export default function TextInput({ name, placeholder, onChange, isLongText = false }: TextInputProps) {
+export default function TextInput({
+  name,
+  value,
+  placeholder,
+  onChange,
+  isLongText = false,
+  isRequired = false
+}: TextInputProps) {
   const placeholderText = placeholder ? placeholder : `Enter task ${name.toLowerCase()}`
   const fieldTitle = name.charAt(0).toUpperCase() + name.substring(1)
 
@@ -20,18 +29,22 @@ export default function TextInput({ name, placeholder, onChange, isLongText = fa
         <textarea
           className='bg-pastel-white text-pastel-gray-dark border-pastel-turquoise outline-pastel-turquoise focus:outline-pastel-teal-dark placeholder:text-pastel-gray-medium min-h-36 rounded-md border-2 p-2'
           id={name}
+          value={value}
           name={name}
           placeholder={placeholderText}
           onChange={handleChange}
+          required={isRequired}
         />
       ) : (
         <input
           className='bg-pastel-white text-pastel-gray-dark border-pastel-turquoise outline-pastel-turquoise focus:outline-pastel-teal-dark placeholder:text-pastel-gray-medium rounded-md border-2 p-2'
           id={name}
+          value={value}
           name={name}
           type='text'
           placeholder={placeholderText}
           onChange={handleChange}
+          required={isRequired}
         />
       )}
     </label>

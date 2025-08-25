@@ -3,15 +3,28 @@ import TextInput from './TextInput'
 import SelectInput from './SelectInput'
 import DateInput from './DateInput'
 import TagInput from './TagInput'
+import { useEffect, useState } from 'react'
 
 type TodoInputProps = {
-  todo?: Todo
+  todo?: Todo | null
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
   setTodo: React.Dispatch<React.SetStateAction<Todo | null>>
-  onSubmit: () => Promise<boolean>
+  onSubmit: (todo: Todo) => Promise<boolean>
+}
+
+function formatTimeValue(date: Date): string {
+  return date.toISOString().split('T')[0]
 }
 
 export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }: TodoInputProps) {
+  const [formData, setFormData] = useState<Todo>(todo ?? createEmptyTodo())
+
+  useEffect(() => {
+    if (todo) {
+      setFormData(todo)
+    }
+  }, [todo])
+
   const priorityList = [...priorities]
   const statusList = [...statuses]
 
@@ -21,25 +34,24 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
 
   function handleChange(args: { name: string; value: string }) {
     const { name, value } = args
-    const savedValue = name === 'duedate' ? new Date(value) : value
+    const newValue = name === 'duedate' ? new Date(value) : value
 
-    setTodo((prev) => {
-      const todo = prev ?? createEmptyTodo()
-      return { ...todo, [name]: savedValue }
+    setFormData((prev) => {
+      return { ...prev, [name]: newValue }
     })
   }
 
-  function handleAddTag(tags: string[]) {
-    setTodo((prev) => {
-      const todo = prev ?? createEmptyTodo()
-      return { ...todo, tags: [...tags] }
+  function handleChangeTag(newTags: string[]) {
+    setFormData((prev) => {
+      return { ...prev, tags: [...newTags] }
     })
   }
 
   async function handleSubmitForm() {
-    const result = await onSubmit()
+    const result = await onSubmit(formData)
     if (result) {
       setShowInputForm(false)
+      setTodo(null)
     }
   }
 
@@ -59,22 +71,47 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
         </div>
 
         <div className='mb-10 flex w-full flex-col gap-5'>
-          <TextInput name='title' placeholder='Enter a short title for the new task' onChange={handleChange} />
+          <TextInput
+            name='title'
+            placeholder='Enter a short title for the new task'
+            onChange={handleChange}
+            value={formData.title ?? ''}
+            isRequired={true}
+          />
 
           <TextInput
             name='description'
+            value={formData.description ?? ''}
             placeholder='Enter a description for the new task'
             isLongText
             onChange={handleChange}
+            isRequired={true}
           />
 
           <div className='grid grid-cols-3 gap-5'>
-            <SelectInput name='priority' items={priorityList} onChange={handleChange} />
-            <SelectInput name='status' items={statusList} onChange={handleChange} />
-            <DateInput name='duedate' onChange={handleChange} />
+            <SelectInput
+              name='priority'
+              items={priorityList}
+              onChange={handleChange}
+              value={formData.priority ?? priorityList[0]}
+              isRequired={true}
+            />
+            <SelectInput
+              name='status'
+              items={statusList}
+              onChange={handleChange}
+              value={formData.status ?? statusList[0]}
+              isRequired={true}
+            />
+            <DateInput
+              name='duedate'
+              onChange={handleChange}
+              value={formData.dueDate ? formatTimeValue(formData.dueDate) : ''}
+              isRequired={true}
+            />
           </div>
 
-          <TagInput onTagAdd={handleAddTag} />
+          <TagInput value={formData.tags ?? []} onChange={handleChangeTag} />
         </div>
 
         <button
