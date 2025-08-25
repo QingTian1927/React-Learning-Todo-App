@@ -2,13 +2,21 @@ import { type Status, statuses, type Todo } from '../../types/Todo'
 
 type TodoItemProps = {
   todo: Todo
+  onDelete: (id: string) => Promise<boolean>
 }
 
 function formatTime(date: Date): string {
   return new Intl.DateTimeFormat('en-UK').format(date)
 }
 
-export default function TodoItem({ todo }: TodoItemProps) {
+export default function TodoItem({ todo, onDelete }: TodoItemProps) {
+  async function handleDelete() {
+    const confirmation = confirm(`Are you sure you want to delete the task "${todo.title}"?`)
+    if (confirmation) {
+      await onDelete(todo.id)
+    }
+  }
+
   return (
     <article className='bg-pastel-white flex flex-col items-start justify-start gap-5 rounded-lg p-5'>
       <header className='flex w-full justify-between'>
@@ -24,7 +32,10 @@ export default function TodoItem({ todo }: TodoItemProps) {
 
         <div className='flex flex-wrap items-center justify-start gap-2'>
           {todo.tags.map((tag) => (
-            <span className='bg-pastel-teal-light text-pastel-teal-dark border-pastel-teal-light rounded-full border px-2 py-1 text-xs'>
+            <span
+              key={tag}
+              className='bg-pastel-teal-light text-pastel-teal-dark border-pastel-teal-light rounded-full border px-2 py-1 text-xs'
+            >
               <i className='bi bi-tag-fill mr-1'></i> {tag}
             </span>
           ))}
@@ -33,7 +44,10 @@ export default function TodoItem({ todo }: TodoItemProps) {
 
       <div className='flex w-full flex-wrap items-center justify-between gap-2'>
         <div className='flex flex-wrap items-stretch justify-start gap-2'>
-          <select className='bg-pastel-turquoise text-pastel-white rounded-full p-1 text-sm font-medium'>
+          <select
+            value={todo.status}
+            className='bg-pastel-turquoise text-pastel-white rounded-full p-1 text-sm font-medium'
+          >
             {statuses.map((status: Status) => (
               <option value={status} key={status}>
                 {status}
@@ -44,7 +58,10 @@ export default function TodoItem({ todo }: TodoItemProps) {
           <button className='text-pastel-white warning-btn cursor-pointer rounded-full px-3 py-1 text-sm font-medium'>
             Edit
           </button>
-          <button className='text-pastel-white danger-btn cursor-pointer rounded-full px-3 py-1 text-sm font-medium'>
+          <button
+            onClick={handleDelete}
+            className='text-pastel-white danger-btn cursor-pointer rounded-full px-3 py-1 text-sm font-medium'
+          >
             Delete
           </button>
         </div>

@@ -52,12 +52,42 @@ function App() {
     return false
   }
 
+  async function handleDeleteTodo(id: string): Promise<boolean> {
+    if (id === '') {
+      alert('No task was selected for deletion')
+      return false
+    }
+
+    try {
+      await todoService.delete(id)
+
+      if (currentTodo && currentTodo.id === id) {
+        setCurrentTodo(null)
+      }
+      setTodos((prev) => prev.filter((todo) => todo.id !== id))
+
+      alert('Todo deleted successfully')
+      return true
+    } catch (err) {
+      console.error('Failed to delete todo:', err)
+      alert('Error deleting todo')
+    }
+
+    return false
+  }
+
   return (
     <AppContainer>
       <Header />
 
       <main>
-        <TodoList todos={todos} onEdit={handleSelectTodo} setShowInputForm={setShowInputForm} />
+        <TodoList
+          todos={todos}
+          onEdit={handleSelectTodo}
+          onDelete={handleDeleteTodo}
+          setTodo={setCurrentTodo}
+          setShowInputForm={setShowInputForm}
+        />
         {showInputForm && (
           <TodoInput setShowInputForm={setShowInputForm} setTodo={setCurrentTodo} onSubmit={handleSave} />
         )}
