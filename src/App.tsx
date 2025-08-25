@@ -24,22 +24,31 @@ function App() {
   }, [])
 
   function handleSelectTodo(todo?: Todo) {
-    setCurrentTodo(todo ?? createEmptyTodo)
+    setCurrentTodo(todo ?? createEmptyTodo())
   }
 
-  async function handleSave(): Promise<boolean> {
-    if (!currentTodo) {
+  async function handleSave(todo: Todo): Promise<boolean> {
+    if (!todo) {
       alert('Please enter all required task details')
       return false
     }
 
-    if (currentTodo.id !== '') {
-      // edit mode
-      return false
+    if (todo.id !== '') {
+      try {
+        const { id, ...todoData } = todo
+        const updatedTodo = await todoService.update(id, todoData)
+        setTodos((prev) => prev.map((oldTodo) => (oldTodo.id === id ? { ...updatedTodo, id } : oldTodo)))
+
+        return true
+      } catch (err) {
+        console.error('Failed to update todo:', err)
+        alert('Error updating todo')
+        return false
+      }
     }
 
     try {
-      const { id, ...todoData } = currentTodo
+      const { id, ...todoData } = todo
       const newTodo = await todoService.create(todoData)
       setTodos((prev) => [newTodo, ...prev])
 
@@ -85,11 +94,15 @@ function App() {
           todos={todos}
           onEdit={handleSelectTodo}
           onDelete={handleDeleteTodo}
-          setTodo={setCurrentTodo}
           setShowInputForm={setShowInputForm}
         />
         {showInputForm && (
-          <TodoInput setShowInputForm={setShowInputForm} setTodo={setCurrentTodo} onSubmit={handleSave} />
+          <TodoInput
+            todo={currentTodo}
+            setShowInputForm={setShowInputForm}
+            setTodo={setCurrentTodo}
+            onSubmit={handleSave}
+          />
         )}
       </main>
     </AppContainer>

@@ -3,18 +3,25 @@ import { type Status, statuses, type Todo } from '../../types/Todo'
 type TodoItemProps = {
   todo: Todo
   onDelete: (id: string) => Promise<boolean>
+  onEdit: (todo?: Todo) => void
+  setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function formatTime(date: Date): string {
   return new Intl.DateTimeFormat('en-UK').format(date)
 }
 
-export default function TodoItem({ todo, onDelete }: TodoItemProps) {
+export default function TodoItem({ todo, onDelete, onEdit, setShowInputForm }: TodoItemProps) {
   async function handleDelete() {
     const confirmation = confirm(`Are you sure you want to delete the task "${todo.title}"?`)
     if (confirmation) {
       await onDelete(todo.id)
     }
+  }
+
+  function handleEdit() {
+    onEdit(todo)
+    setShowInputForm(true)
   }
 
   return (
@@ -55,7 +62,10 @@ export default function TodoItem({ todo, onDelete }: TodoItemProps) {
             ))}
           </select>
 
-          <button className='text-pastel-white warning-btn cursor-pointer rounded-full px-3 py-1 text-sm font-medium'>
+          <button
+            onClick={handleEdit}
+            className='text-pastel-white warning-btn cursor-pointer rounded-full px-3 py-1 text-sm font-medium'
+          >
             Edit
           </button>
           <button
