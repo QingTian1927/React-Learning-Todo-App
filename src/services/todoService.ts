@@ -1,4 +1,5 @@
 import type { Priority, Status, Todo } from '../types/Todo'
+import { cacheService } from './cacheService'
 
 const BASE_URL = 'https://shrimo.com/fake-api/todos'
 
@@ -25,11 +26,14 @@ async function getTodos(): Promise<Todo[]> {
   }
 
   const rawData: TodoResponse[] = await response.json()
-  return rawData.map((item) => ({
+  const todos: Todo[] = rawData.map((item) => ({
     ...item,
     id: item._id,
     dueDate: new Date(item.dueDate)
   }))
+
+  cacheService.save(todos)
+  return todos
 }
 
 async function createTodo(todo: Omit<Todo, 'id'>): Promise<Todo> {
