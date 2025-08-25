@@ -11,10 +11,6 @@ type TodoListProps = {
 export default function TodoList({ todos, onEdit, setShowInputForm }: TodoListProps) {
   return (
     <section className='grid grid-cols-2 gap-5'>
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
-
       <button
         onClick={() => {
           setShowInputForm(true)
@@ -25,6 +21,10 @@ export default function TodoList({ todos, onEdit, setShowInputForm }: TodoListPr
           <i className='bi bi-plus-lg'></i>
         </span>
       </button>
+
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
     </section>
   )
 }

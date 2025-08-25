@@ -8,7 +8,7 @@ type TodoInputProps = {
   todo?: Todo
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
   setTodo: React.Dispatch<React.SetStateAction<Todo | null>>
-  onSubmit: () => void
+  onSubmit: () => Promise<boolean>
 }
 
 export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }: TodoInputProps) {
@@ -36,8 +36,11 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
     })
   }
 
-  function handleSubmitForm() {
-    onSubmit()
+  async function handleSubmitForm() {
+    const result = await onSubmit()
+    if (result) {
+      setShowInputForm(false)
+    }
   }
 
   return (
