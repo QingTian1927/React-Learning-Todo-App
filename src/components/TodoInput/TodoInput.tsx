@@ -30,11 +30,12 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
 
   function handleCloseButton() {
     setShowInputForm(false)
+    setTodo(null)
   }
 
   function handleChange(args: { name: string; value: string }) {
     const { name, value } = args
-    const newValue = name === 'duedate' ? new Date(value) : value
+    const newValue = name === 'dueDate' ? new Date(value) : value
 
     setFormData((prev) => {
       return { ...prev, [name]: newValue }
@@ -104,7 +105,7 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
               isRequired={true}
             />
             <DateInput
-              name='duedate'
+              name='dueDate'
               onChange={handleChange}
               value={formData.dueDate ? formatTimeValue(formData.dueDate) : ''}
               isRequired={true}

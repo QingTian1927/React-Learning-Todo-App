@@ -12,7 +12,7 @@ export type Todo = {
   id: string
   title: string
   description: string
-  dueDate: Date
+  dueDate?: Date
   priority: Priority
   status: Status
   tags: string[]
@@ -26,9 +26,9 @@ export function createEmptyTodo(): Todo {
     id: '',
     title: '',
     description: '',
-    dueDate: new Date(),
+    dueDate: undefined,
     priority: 'Low',
     status: 'Not Started',
-    tags: ['']
+    tags: []
   }
 }
