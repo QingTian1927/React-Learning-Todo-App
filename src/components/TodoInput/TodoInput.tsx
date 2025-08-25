@@ -16,6 +16,24 @@ function formatTimeValue(date: Date): string {
   return date.toISOString().split('T')[0]
 }
 
+function isValidFormData(formData: Todo): boolean {
+  if (!formData.title || formData.title === '') {
+    alert('Task title must not be empty')
+    return false
+  }
+
+  if (!formData.description || formData.description === '') {
+    alert('Task description must not be empty')
+    return false
+  }
+
+  if (!formData.dueDate) {
+    alert('Task due date must not be empty')
+    return false
+  }
+  return true
+}
+
 export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }: TodoInputProps) {
   const [formData, setFormData] = useState<Todo>(todo ?? createEmptyTodo())
 
@@ -49,6 +67,10 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
   }
 
   async function handleSubmitForm() {
+    if (!isValidFormData(formData)) {
+      return
+    }
+
     const result = await onSubmit(formData)
     if (result) {
       setShowInputForm(false)
