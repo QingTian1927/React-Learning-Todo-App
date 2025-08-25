@@ -8,7 +8,7 @@ export interface ApiResponse<T> {
 }
 
 type TodoResponse = {
-  id: string
+  _id: string
   title: string
   description: string
   dueDate: string // ISO date string
@@ -27,6 +27,7 @@ async function getTodos(): Promise<Todo[]> {
   const rawData: TodoResponse[] = await response.json()
   return rawData.map((item) => ({
     ...item,
+    id: item._id,
     dueDate: new Date(item.dueDate)
   }))
 }
@@ -47,7 +48,18 @@ async function createTodo(todo: Omit<Todo, 'id'>): Promise<Todo> {
   return newTodo
 }
 
+async function deleteTodo(id: string) {
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: 'DELETE'
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete todo: ${response.statusText}`)
+  }
+}
+
 export const todoService = {
   get: getTodos,
-  create: createTodo
+  create: createTodo,
+  delete: deleteTodo
 } as const
