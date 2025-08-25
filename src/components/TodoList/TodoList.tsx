@@ -5,6 +5,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 type TodoListProps = {
   todos: Todo[]
   onEdit: (todo?: Todo) => void
+  onToggleStatus: (todo: Todo) => Promise<boolean>
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
 
   // 2-level props passing. props are completely unused here
@@ -12,7 +13,7 @@ type TodoListProps = {
   onDelete: (id: string) => Promise<boolean>
 }
 
-export default function TodoList({ todos, onEdit, onDelete, setShowInputForm }: TodoListProps) {
+export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setShowInputForm }: TodoListProps) {
   return (
     <section className='grid grid-cols-2 gap-5'>
       <button
@@ -27,7 +28,14 @@ export default function TodoList({ todos, onEdit, onDelete, setShowInputForm }: 
       </button>
 
       {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onEdit={onEdit} setShowInputForm={setShowInputForm} />
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onDelete={onDelete}
+          onEdit={onEdit}
+          setShowInputForm={setShowInputForm}
+          onToggleStatus={onToggleStatus}
+        />
       ))}
     </section>
   )

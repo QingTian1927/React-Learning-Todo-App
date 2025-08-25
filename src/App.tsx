@@ -94,6 +94,7 @@ function App() {
           todos={todos}
           onEdit={handleSelectTodo}
           onDelete={handleDeleteTodo}
+          onToggleStatus={handleSave}
           setShowInputForm={setShowInputForm}
         />
         {showInputForm && (

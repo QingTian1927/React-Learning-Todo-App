@@ -4,14 +4,15 @@ type TodoItemProps = {
   todo: Todo
   onDelete: (id: string) => Promise<boolean>
   onEdit: (todo?: Todo) => void
+  onToggleStatus: (todo: Todo) => Promise<boolean>
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function formatTime(date: Date): string {
+function formatTime(date?: Date): string {
   return new Intl.DateTimeFormat('en-UK').format(date)
 }
 
-export default function TodoItem({ todo, onDelete, onEdit, setShowInputForm }: TodoItemProps) {
+export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setShowInputForm }: TodoItemProps) {
   async function handleDelete() {
     const confirmation = confirm(`Are you sure you want to delete the task "${todo.title}"?`)
     if (confirmation) {
@@ -22,6 +23,10 @@ export default function TodoItem({ todo, onDelete, onEdit, setShowInputForm }: T
   function handleEdit() {
     onEdit(todo)
     setShowInputForm(true)
+  }
+
+  async function handleToggleStatus(e: React.ChangeEvent<HTMLSelectElement>) {
+    await onToggleStatus({ ...todo, status: e.target.value as Status })
   }
 
   return (
@@ -53,6 +58,8 @@ export default function TodoItem({ todo, onDelete, onEdit, setShowInputForm }: T
         <div className='flex flex-wrap items-stretch justify-start gap-2'>
           <select
             value={todo.status}
+            name='status'
+            onChange={handleToggleStatus}
             className='bg-pastel-turquoise text-pastel-white rounded-full p-1 text-sm font-medium'
           >
             {statuses.map((status: Status) => (
