@@ -21,8 +21,6 @@ type TodoResponse = {
 }
 
 async function getTodos(isOnline = navigator.onLine): Promise<Todo[]> {
-  console.log({ isOnline })
-
   if (isOnline) {
     const response = await fetch(`${BASE_URL}`)
     if (!response.ok) {
@@ -129,9 +127,24 @@ async function updateTodo(id: string, todo: Partial<Omit<Todo, 'id'>>, isOnline 
   return updatedTodo as Todo
 }
 
+function searchText(todos: Todo[], query: string): Todo[] {
+  if (!query) {
+    return []
+  }
+
+  return todos.filter((todo) => {
+    const lowerCaseQuery = query.toLowerCase()
+    const titleMatch = todo.title.toLowerCase().includes(lowerCaseQuery)
+    const descriptionMatch = todo.description.toLowerCase().includes(lowerCaseQuery)
+
+    return titleMatch || descriptionMatch
+  })
+}
+
 export const todoService = {
   get: getTodos,
   create: createTodo,
   delete: deleteTodo,
-  update: updateTodo
+  update: updateTodo,
+  searchText: searchText
 } as const

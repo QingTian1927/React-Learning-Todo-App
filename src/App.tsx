@@ -9,6 +9,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus'
 
 function App() {
   const isOnline = useOnlineStatus()
+  const [originalTodos, setOriginalTodos] = useState<Todo[]>([])
   const [todos, setTodos] = useState<Todo[]>([])
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null)
   const [showInputForm, setShowInputForm] = useState(false)
@@ -18,6 +19,7 @@ function App() {
       try {
         const fetchedTodos = await todoService.get(isOnline)
         setTodos(fetchedTodos)
+        setOriginalTodos(fetchedTodos)
       } catch (err) {
         console.error('Failed to fetch todos:', err)
       }
@@ -89,7 +91,7 @@ function App() {
 
   return (
     <AppContainer>
-      <Header />
+      <Header todos={originalTodos} setTodos={setTodos} />
 
       <main>
         <TodoList
