@@ -12,6 +12,7 @@ export interface ApiResponse<T> {
 
 type TodoResponse = {
   _id: string
+  id: string
   title: string
   description: string
   dueDate: string // ISO date string
@@ -49,6 +50,8 @@ async function getTodos(isOnline = navigator.onLine): Promise<Todo[]> {
 }
 
 async function createTodo(todo: Omit<Todo, 'id'>, isOnline = navigator.onLine): Promise<Todo> {
+  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
+
   if (isOnline) {
     const response = await fetch(`${BASE_URL}`, {
       method: 'POST',
@@ -61,14 +64,16 @@ async function createTodo(todo: Omit<Todo, 'id'>, isOnline = navigator.onLine): 
     }
 
     const result: ApiResponse<TodoResponse> = await response.json()
-    const newTodo = { ...result.data, dueDate: new Date(result.data.dueDate), id: result.data._id }
+    const newTodo = { ...result.data, dueDate: new Date(result.data.dueDate), id: result.data._id || result.data.id }
+
+    cacheService.save([newTodo, ...cached])
     return newTodo
   }
 
   const offlineAction = createOfflineAction({ ...todo, id: '' }, 'create')
+  offlineAction.data.id = offlineAction.id
   offlineService.enqueue(offlineAction)
 
-  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
   const newLocalTodo = { ...todo, id: offlineAction.id }
   cacheService.save([newLocalTodo, ...cached])
 
@@ -76,6 +81,8 @@ async function createTodo(todo: Omit<Todo, 'id'>, isOnline = navigator.onLine): 
 }
 
 async function deleteTodo(id: string, isOnline = navigator.onLine) {
+  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
+
   if (isOnline) {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'DELETE'
@@ -84,19 +91,23 @@ async function deleteTodo(id: string, isOnline = navigator.onLine) {
     if (!response.ok) {
       throw new Error(`Failed to delete todo: ${response.statusText}`)
     }
+
+    const updatedCache = cached.filter((todo) => todo.id !== id)
+    cacheService.save(updatedCache)
+    return
   }
 
   const offlineAction = createOfflineAction({ id } as Todo, 'delete')
   offlineService.enqueue(offlineAction)
 
-  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
   const updatedCache = cached.filter((todo) => todo.id !== id)
   cacheService.save(updatedCache)
-
   return
 }
 
 async function updateTodo(id: string, todo: Partial<Omit<Todo, 'id'>>, isOnline = navigator.onLine): Promise<Todo> {
+  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
+
   if (isOnline) {
     const response = await fetch(`${BASE_URL}/${id}`, {
       method: 'PUT',
@@ -107,15 +118,19 @@ async function updateTodo(id: string, todo: Partial<Omit<Todo, 'id'>>, isOnline 
     if (!response.ok) {
       throw new Error(`Failed to update: todo: ${response.statusText}`)
     }
+
     const result: ApiResponse<TodoResponse> = await response.json()
     const updatedTodo = { ...result.data, dueDate: new Date(result.data.dueDate), id: result.data._id }
+
+    const updatedCache = cached.map((oldTodo) => (oldTodo.id === id ? { ...oldTodo, ...updatedTodo } : oldTodo))
+    cacheService.save(updatedCache)
+
     return updatedTodo
   }
 
   const offlineAction = createOfflineAction({ ...todo, id } as Todo, 'update')
   offlineService.enqueue(offlineAction)
 
-  const cached: Todo[] = (cacheService.load() as Todo[]) ?? []
   const updatedCache = cached.map((oldTodo) => (oldTodo.id === id ? { ...oldTodo, ...todo } : oldTodo))
   cacheService.save(updatedCache)
 

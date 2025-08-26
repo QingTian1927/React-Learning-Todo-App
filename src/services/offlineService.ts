@@ -1,4 +1,6 @@
 import type { OfflineAction } from '../types/OfflineAction'
+import type { Todo } from '../types/Todo'
+import { cacheService } from './cacheService'
 import { todoService } from './todoService'
 
 const QUEUE_STORAGE_KEY = 'offlineActionStorage'
@@ -49,7 +51,11 @@ function getQueue(): OfflineAction[] {
   return [...queue]
 }
 
-async function processQueue() {
+function isDataUnsynced(): boolean {
+  return queue.length > 0
+}
+
+async function processQueue(): Promise<boolean> {
   while (queue.length > 0) {
     const action = queue[0]
 
@@ -58,7 +64,12 @@ async function processQueue() {
 
       switch (action.type) {
         case 'create': {
-          await todoService.create(action.data)
+          const createdTodo = await todoService.create(action.data)
+          const oldId = id || action.data.id
+          const newId = createdTodo.id
+
+          updateQueueItemIds(oldId, newId)
+          updateCacheItemId(oldId, newId)
           break
         }
         case 'update': {
@@ -74,14 +85,33 @@ async function processQueue() {
       dequeueAction()
     } catch (err) {
       console.error('Synchronization action failed:', err)
-      break
+      return false
     }
   }
+
+  return isDataUnsynced()
+}
+
+function updateQueueItemIds(oldId: string, newId: string) {
+  queue = queue.map((action) => {
+    if (action.data.id === oldId) {
+      return { ...action, data: { ...action.data, id: newId } }
+    }
+    return action
+  })
+  saveQueue(queue)
+}
+
+function updateCacheItemId(oldId: string, newId: string) {
+  const cachedTodo = (cacheService.load() as Todo[]) ?? []
+  const updatedTodos = cachedTodo.map((todo) => (todo.id === oldId ? { ...todo, id: newId } : todo))
+  cacheService.save(updatedTodos)
 }
 
 export const offlineService = {
   enqueue: enqueueAction,
   dequeue: dequeueAction,
   sync: processQueue,
-  getQueue: getQueue
+  getQueue: getQueue,
+  isUnsynced: isDataUnsynced
 } as const

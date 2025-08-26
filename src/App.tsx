@@ -6,6 +6,7 @@ import TodoList from './components/TodoList/TodoList'
 import { createEmptyTodo, type Todo } from './types/Todo'
 import { todoService } from './services/todoService'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
+import { offlineService } from './services/offlineService'
 
 function App() {
   const isOnline = useOnlineStatus()
@@ -17,9 +18,17 @@ function App() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const fetchedTodos = await todoService.get(isOnline)
+        let fetchedTodos = await todoService.get(isOnline)
         setTodos(fetchedTodos)
         setOriginalTodos(fetchedTodos)
+
+        if (isOnline && offlineService.isUnsynced()) {
+          const syncResult = await offlineService.sync()
+
+          fetchedTodos = await todoService.get(isOnline)
+          setTodos(fetchedTodos)
+          setOriginalTodos(fetchedTodos)
+        }
       } catch (err) {
         console.error('Failed to fetch todos:', err)
       }
