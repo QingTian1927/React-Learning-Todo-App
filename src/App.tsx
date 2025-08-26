@@ -5,8 +5,10 @@ import TodoInput from './components/TodoInput/TodoInput'
 import TodoList from './components/TodoList/TodoList'
 import { createEmptyTodo, type Todo } from './types/Todo'
 import { todoService } from './services/todoService'
+import { useOnlineStatus } from './hooks/useOnlineStatus'
 
 function App() {
+  const isOnline = useOnlineStatus()
   const [todos, setTodos] = useState<Todo[]>([])
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null)
   const [showInputForm, setShowInputForm] = useState(false)
@@ -14,14 +16,14 @@ function App() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const fetchedTodos = await todoService.get()
+        const fetchedTodos = await todoService.get(isOnline)
         setTodos(fetchedTodos)
       } catch (err) {
         console.error('Failed to fetch todos:', err)
       }
     }
     fetchTodos()
-  }, [])
+  }, [isOnline])
 
   function handleSelectTodo(todo?: Todo) {
     setCurrentTodo(todo ?? createEmptyTodo())
@@ -36,7 +38,7 @@ function App() {
     if (todo.id !== '') {
       try {
         const { id, ...todoData } = todo
-        const updatedTodo = await todoService.update(id, todoData)
+        const updatedTodo = await todoService.update(id, todoData, isOnline)
         setTodos((prev) => prev.map((oldTodo) => (oldTodo.id === id ? { ...updatedTodo, id } : oldTodo)))
 
         return true
@@ -49,7 +51,7 @@ function App() {
 
     try {
       const { id, ...todoData } = todo
-      const newTodo = await todoService.create(todoData)
+      const newTodo = await todoService.create(todoData, isOnline)
       setTodos((prev) => [newTodo, ...prev])
 
       return true
@@ -68,7 +70,7 @@ function App() {
     }
 
     try {
-      await todoService.delete(id)
+      await todoService.delete(id, isOnline)
 
       if (currentTodo && currentTodo.id === id) {
         setCurrentTodo(null)
