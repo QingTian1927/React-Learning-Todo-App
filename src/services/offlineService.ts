@@ -36,8 +36,30 @@ function saveQueue(queue: OfflineAction[]) {
 
 let queue: OfflineAction[] = loadQueue()
 
-function enqueueAction(action: OfflineAction) {
-  queue.push(action)
+function enqueueAction(newAction: OfflineAction) {
+  if (newAction.type === 'delete') {
+    const createIndex = queue.findIndex((action) => action.data.id === newAction.data.id && action.type === 'create')
+
+    // Don't sync locally created todo items if they are immediately deleted afterwards
+    if (createIndex !== -1) {
+      queue.splice(createIndex, 1)
+      saveQueue(queue)
+      return
+    }
+  }
+
+  if (newAction.type === 'update') {
+    const createAction = queue.find((action) => action.data.id === newAction.data.id && action.type === 'create')
+
+    // Append edited data directly to the create request of a locally created todo item
+    if (createAction) {
+      createAction.data = { ...createAction.data, ...newAction.data }
+      saveQueue(queue)
+      return
+    }
+  }
+
+  queue.push(newAction)
   saveQueue(queue)
 }
 
