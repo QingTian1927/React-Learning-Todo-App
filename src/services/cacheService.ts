@@ -32,6 +32,6 @@ function clearTodosCache() {
 
 export const cacheService = {
   save: saveTodosCache,
-  load: saveTodosCache,
+  load: loadTodosCache,
   clear: clearTodosCache
 } as const
