@@ -1,3 +1,5 @@
+import toast from 'react-hot-toast'
+
 type TagInputProps = {
   value: string[]
   onChange: (tags: string[]) => void
@@ -11,12 +13,12 @@ export default function TagInput({ value: tags, onChange }: TagInputProps) {
       const newTag = input.value.trim()
 
       if (!newTag) {
-        alert('Tag cannot be empty! Please try again.')
+        toast.error('Tag cannot be empty! Please try again.')
         return
       }
 
       if (tags.includes(newTag)) {
-        alert('Tag already exists! Please enter a different tag.')
+        toast.error('Tag already exists! Please enter a different tag.')
         return
       }
 

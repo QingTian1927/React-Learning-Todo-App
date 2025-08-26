@@ -4,6 +4,7 @@ import SelectInput from './SelectInput'
 import DateInput from './DateInput'
 import TagInput from './TagInput'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 
 type TodoInputProps = {
   todo?: Todo | null
@@ -18,17 +19,17 @@ function formatTimeValue(date: Date): string {
 
 function isValidFormData(formData: Todo): boolean {
   if (!formData.title || formData.title === '') {
-    alert('Task title must not be empty')
+    toast.error('Task title must not be empty')
     return false
   }
 
   if (!formData.description || formData.description === '') {
-    alert('Task description must not be empty')
+    toast.error('Task description must not be empty')
     return false
   }
 
   if (!formData.dueDate) {
-    alert('Task due date must not be empty')
+    toast.error('Task due date must not be empty')
     return false
   }
   return true

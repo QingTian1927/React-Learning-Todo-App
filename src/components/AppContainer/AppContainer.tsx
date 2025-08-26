@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 type AppContainerProps = {
   children?: ReactNode

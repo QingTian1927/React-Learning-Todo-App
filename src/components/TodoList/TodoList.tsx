@@ -1,6 +1,5 @@
 import { type Todo } from '../../types/Todo'
 import TodoItem from '../TodoItem/TodoItem'
-import 'bootstrap-icons/font/bootstrap-icons.css'
 
 type TodoListProps = {
   todos: Todo[]
