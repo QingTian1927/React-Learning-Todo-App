@@ -1,12 +1,16 @@
 type HeaderTitleProps = {
-  time: string
+  time: Date
+}
+
+function formatTime(now: Date): string {
+  return new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short' }).format(now)
 }
 
 export default function HeaderTitle({ time }: HeaderTitleProps) {
   return (
     <div className='text-pastel-gray-dark flex h-full items-center gap-3'>
       <h1 className='text-2xl font-bold'>Tasks</h1>
-      <span className='text-2xl'>{time}</span>
+      <span className='text-2xl'>{formatTime(time)}</span>
     </div>
   )
 }

@@ -1,24 +1,28 @@
+import { useEffect, useState } from 'react'
 import type { Todo } from '../../types/Todo'
 import FilterBar from './FilterBar'
 import HeaderTitle from './HeaderTitle'
-import ViewSwitcher from './ViewSwitcher'
 
 type HeaderProps = {
   todos: Todo[]
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
-function getCurrentTime(): string {
-  const now = new Date()
-  return new Intl.DateTimeFormat('en-US', { day: '2-digit', month: 'short' }).format(now)
-}
-
 export default function Header({ todos, setTodos }: HeaderProps) {
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 60 * 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <header className='mb-5 flex min-h-[10svh] w-full items-center justify-between gap-2 rounded-md'>
-      <HeaderTitle time={getCurrentTime()} />
+    <header className='mb-5 grid min-h-[10svh] w-full grid-cols-2 items-center justify-between gap-2 gap-5 rounded-md'>
+      <HeaderTitle time={currentTime} />
       <FilterBar originalTodos={todos} setTodos={setTodos} />
-      <ViewSwitcher />
     </header>
   )
 }
