@@ -28,7 +28,7 @@ export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setS
         </div>
       )}
 
-      <section className='grid grid-cols-2 gap-5'>
+      <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
         <button
           onClick={() => {
             setShowInputForm(true)

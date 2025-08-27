@@ -81,7 +81,7 @@ export default function TodoInput({ todo, setShowInputForm, setTodo, onSubmit }:
 
   return (
     <div className='bg-pastel-gray-dark-transparent text-pastel-gray-dark fixed top-0 left-0 z-10 flex size-full items-center justify-center'>
-      <form className='bg-pastel-white flex min-h-2/3 min-w-1/2 flex-col items-center rounded-xl p-5'>
+      <form className='bg-pastel-white flex size-full min-h-2/3 max-w-full min-w-1/2 flex-col items-center rounded-none p-5 md:size-auto md:max-w-2/3 md:rounded-xl'>
         <div className='mb-10 flex w-full items-center justify-between'>
           <h2 className='text-2xl font-bold'>{todo ? 'Edit Task' : 'Add New Task'}</h2>
 

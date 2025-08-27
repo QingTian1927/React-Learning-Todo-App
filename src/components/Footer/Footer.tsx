@@ -8,7 +8,7 @@ export default function Footer({ todoCount }: FooterProps) {
   const isOnline = useOnlineStatus()
 
   return (
-    <footer className='bg-pastel-cream mt-5 flex w-full items-center justify-between gap-5'>
+    <footer className='bg-pastel-cream mt-5 flex w-full flex-wrap items-center justify-between gap-5'>
       <h3 className='font-medium'>Shrimo Todo</h3>
 
       <div className='flex items-center justify-end gap-2 font-medium'>

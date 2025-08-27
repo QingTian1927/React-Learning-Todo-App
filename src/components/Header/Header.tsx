@@ -20,7 +20,7 @@ export default function Header({ todos, setTodos }: HeaderProps) {
   }, [])
 
   return (
-    <header className='mb-5 grid min-h-[10svh] w-full grid-cols-2 items-center justify-between gap-2 gap-5 rounded-md'>
+    <header className='mb-5 grid min-h-[10svh] w-full grid-cols-1 items-center justify-between gap-2 gap-5 rounded-md md:grid-cols-2'>
       <HeaderTitle time={currentTime} />
       <FilterBar originalTodos={todos} setTodos={setTodos} />
     </header>
