@@ -79,7 +79,7 @@ export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setSh
       </header>
 
       <div className='grow'>
-        <p className='mb-5'>{todo.description}</p>
+        <p className='mb-5 whitespace-pre'>{todo.description}</p>
 
         <div className='flex flex-wrap items-center justify-start gap-2'>
           {todo.tags.map((tag) => (
