@@ -8,6 +8,7 @@ import { todoService } from './services/todoService'
 import { useOnlineStatus } from './hooks/useOnlineStatus'
 import { offlineService } from './services/offlineService'
 import toast, { Toaster } from 'react-hot-toast'
+import Footer from './components/Footer/Footer'
 
 function App() {
   const isOnline = useOnlineStatus()
@@ -167,6 +168,8 @@ function App() {
             />
           )}
         </main>
+
+        <Footer todoCount={todos.length} />
       </AppContainer>
     </>
   )
