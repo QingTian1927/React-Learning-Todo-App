@@ -1,3 +1,4 @@
+import { priorities } from './../types/Todo'
 import { createOfflineAction } from '../types/OfflineAction'
 import type { Priority, Status, Todo } from '../types/Todo'
 import { cacheService } from './cacheService'
@@ -156,10 +157,28 @@ function searchText(todos: Todo[], query: string): Todo[] {
   })
 }
 
+function filterStatus(todos: Todo[], status: string) {
+  if (!status) {
+    return []
+  }
+
+  return todos.filter((todo) => todo.status === status)
+}
+
+function filterPriority(todos: Todo[], priority: string) {
+  if (!priority) {
+    return []
+  }
+
+  return todos.filter((todo) => todo.priority === priority)
+}
+
 export const todoService = {
   get: getTodos,
   create: createTodo,
   delete: deleteTodo,
   update: updateTodo,
-  searchText: searchText
+  searchText: searchText,
+  filterStatus: filterStatus,
+  filterPriority: filterPriority
 } as const
