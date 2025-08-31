@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { type Priority, type Status, statuses, type Todo } from '../../types/Todo'
 
 type TodoItemProps = {
@@ -47,6 +48,12 @@ function getPriorityColor(priority: Priority): string {
 }
 
 export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setShowInputForm }: TodoItemProps) {
+  const [showDetails, setShowDetails] = useState(false)
+
+  function handleShowDetails() {
+    setShowDetails((prev) => !prev)
+  }
+
   async function handleDelete() {
     const confirmation = confirm(`Are you sure you want to delete the task "${todo.title}"?`)
     if (confirmation) {
@@ -64,22 +71,31 @@ export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setSh
   }
 
   return (
-    <article className='bg-pastel-white flex min-h-50 flex-col items-start justify-start gap-5 rounded-lg p-5'>
+    <article className='bg-pastel-white flex min-h-40 flex-col items-start justify-start gap-5 rounded-lg p-5'>
       <header className='flex w-full justify-between'>
         <h3 className='text-2xl font-semibold'>{todo.title}</h3>
 
-        <div
-          className={
-            'flex min-w-[5em] items-center justify-center rounded-full border-2 px-2 text-sm font-medium ' +
-            getPriorityColor(todo.priority)
-          }
-        >
-          <span>{todo.priority}</span>
+        <div className='flex items-stretch justify-end gap-2'>
+          <button
+            onClick={handleShowDetails}
+            className='text-pastel-gray-dark hover:bg-pastel-cream cursor-pointer rounded-md px-2 py-1'
+          >
+            {showDetails ? <i className='bi bi-chevron-down'></i> : <i className='bi bi-chevron-up'></i>}
+          </button>
+
+          <div
+            className={
+              'flex min-w-[5em] items-center justify-center gap-2 rounded-full border-2 px-2 text-sm font-medium ' +
+              getPriorityColor(todo.priority)
+            }
+          >
+            <span>{todo.priority}</span>
+          </div>
         </div>
       </header>
 
       <div className='grow'>
-        <p className='mb-5 whitespace-pre'>{todo.description}</p>
+        {showDetails && <p className='mb-5 whitespace-pre'>{todo.description}</p>}
 
         <div className='flex flex-wrap items-center justify-start gap-2'>
           {todo.tags.map((tag) => (

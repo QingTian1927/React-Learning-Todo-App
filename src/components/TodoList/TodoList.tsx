@@ -33,7 +33,7 @@ export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setS
           onClick={() => {
             setShowInputForm(true)
           }}
-          className='group border-pastel-turquoise hover:border-pastel-teal-dark flex min-h-50 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-5'
+          className='group border-pastel-turquoise hover:border-pastel-teal-dark flex min-h-40 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-5'
         >
           <span className='text-pastel-turquoise group-hover:text-pastel-teal-dark text-4xl font-bold'>
             <i className='bi bi-plus-lg'></i>
