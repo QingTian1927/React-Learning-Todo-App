@@ -140,7 +140,12 @@ export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setSh
 
         <div
           className={
-            'text-sm font-semibold ' + (isOverdue(todo.dueDate as Date) ? 'text-red-400' : 'text-pastel-teal-dark')
+            'text-sm font-semibold ' +
+            (isOverdue(todo.dueDate as Date)
+              ? todo.status === 'Completed'
+                ? 'text-emerald-400'
+                : 'text-red-400'
+              : 'text-pastel-teal-dark')
           }
         >
           Due: {formatTime(todo.dueDate)}

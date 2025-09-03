@@ -1,10 +1,36 @@
-export default function ViewSwitcher() {
+import type { ViewMode } from '../../types/ViewMode'
+
+type ViewSwitcherProps = {
+  viewMode?: ViewMode
+  setViewMode: React.Dispatch<React.SetStateAction<ViewMode>>
+}
+
+export default function ViewSwitcher({ viewMode = 'grid', setViewMode }: ViewSwitcherProps) {
+  const inactiveStyling = 'hover:bg-pastel-white hover:text-pastel-turquoise cursor-pointer'
+  const activeStyling = 'bg-pastel-white text-pastel-gray-dark cursor-default'
+
+  function handleChangeView(value: ViewMode) {
+    setViewMode(value)
+  }
+
   return (
-    <nav className='bg-pastel-turquoise text-pastel-white flex cursor-pointer rounded-full font-bold'>
-      <ul className='hover:bg-pastel-white hover:text-pastel-turquoise rounded-s-full px-5 py-2'>Day</ul>
-      <ul className='hover:bg-pastel-white hover:text-pastel-turquoise px-5 py-2'>Week</ul>
-      <ul className='hover:bg-pastel-white hover:text-pastel-turquoise px-5 py-2'>Month</ul>
-      <ul className='hover:bg-pastel-white hover:text-pastel-turquoise rounded-e-full px-5 py-2'>All</ul>
-    </nav>
+    <div className='bg-pastel-turquoise text-pastel-white flex h-full w-max items-stretch rounded-full text-lg'>
+      <button
+        onClick={() => {
+          handleChangeView('grid')
+        }}
+        className={'rounded-s-full px-5 py-2 ' + (viewMode === 'grid' ? activeStyling : inactiveStyling)}
+      >
+        <i className='bi bi-grid-fill'></i>
+      </button>
+      <button
+        onClick={() => {
+          handleChangeView('list')
+        }}
+        className={'rounded-e-full px-5 py-2 ' + (viewMode === 'list' ? activeStyling : inactiveStyling)}
+      >
+        <i className='bi bi-layers-fill'></i>
+      </button>
+    </div>
   )
 }

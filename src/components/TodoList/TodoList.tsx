@@ -1,4 +1,6 @@
 import { type Todo } from '../../types/Todo'
+import type { ViewMode } from '../../types/ViewMode'
+import TodoGroup from '../TodoItem/TodoGroup'
 import TodoItem from '../TodoItem/TodoItem'
 
 type TodoListProps = {
@@ -6,13 +8,39 @@ type TodoListProps = {
   onEdit: (todo?: Todo) => void
   onToggleStatus: (todo: Todo) => Promise<boolean>
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
+  viewMode: ViewMode
 
   // 2-level props passing. props are completely unused here
   // this ain't good
   onDelete: (id: string) => Promise<boolean>
 }
 
-export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setShowInputForm }: TodoListProps) {
+function groupTodosByDueDate(todos: Todo[]) {
+  return todos.reduce<Record<string, Todo[]>>((groups, todo) => {
+    const key = todo.dueDate ? todo.dueDate.toISOString().split('T')[0] : 'No Due Date'
+
+    if (!groups[key]) {
+      groups[key] = []
+    }
+
+    groups[key].push(todo)
+    return groups
+  }, {})
+}
+
+export default function TodoList({
+  todos,
+  onEdit,
+  onDelete,
+  onToggleStatus,
+  setShowInputForm,
+  viewMode
+}: TodoListProps) {
+  let todoGroups = {}
+  if (viewMode === 'list') {
+    todoGroups = groupTodosByDueDate(todos)
+  }
+
   return (
     <div>
       {todos.length <= 0 && (
@@ -28,7 +56,7 @@ export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setS
         </div>
       )}
 
-      <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+      <section className={'grid grid-cols-1 gap-5 ' + (viewMode === 'grid' && 'md:grid-cols-2')}>
         <button
           onClick={() => {
             setShowInputForm(true)
@@ -40,16 +68,29 @@ export default function TodoList({ todos, onEdit, onDelete, onToggleStatus, setS
           </span>
         </button>
 
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onDelete={onDelete}
-            onEdit={onEdit}
-            setShowInputForm={setShowInputForm}
-            onToggleStatus={onToggleStatus}
-          />
-        ))}
+        {viewMode === 'grid' &&
+          todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onDelete={onDelete}
+              onEdit={onEdit}
+              setShowInputForm={setShowInputForm}
+              onToggleStatus={onToggleStatus}
+            />
+          ))}
+
+        {viewMode === 'list' &&
+          Object.entries(todoGroups).map(([date, todos]) => (
+            <TodoGroup
+              date={date}
+              todos={todos as Todo[]}
+              onEdit={onEdit}
+              onToggleStatus={onToggleStatus}
+              setShowInputForm={setShowInputForm}
+              onDelete={onDelete}
+            />
+          ))}
       </section>
     </div>
   )

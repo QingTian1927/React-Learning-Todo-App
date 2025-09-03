@@ -9,6 +9,7 @@ import { useOnlineStatus } from './hooks/useOnlineStatus'
 import { offlineService } from './services/offlineService'
 import toast, { Toaster } from 'react-hot-toast'
 import Footer from './components/Footer/Footer'
+import { availableViewModes, type ViewMode } from './types/ViewMode'
 
 function App() {
   const isOnline = useOnlineStatus()
@@ -17,6 +18,7 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([])
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null)
   const [showInputForm, setShowInputForm] = useState(false)
+  const [viewMode, setViewMode] = useState<ViewMode>(availableViewModes[0])
 
   useEffect(() => {
     function fetchTodos() {
@@ -24,16 +26,15 @@ function App() {
         const doFetch = async () => {
           try {
             let fetchedTodos = await todoService.get(isOnline)
-            setTodos(fetchedTodos)
-            setOriginalTodos(fetchedTodos)
 
             if (isOnline && offlineService.isUnsynced()) {
               await offlineService.sync()
-
               fetchedTodos = await todoService.get(isOnline)
-              setTodos(fetchedTodos)
-              setOriginalTodos(fetchedTodos)
             }
+
+            fetchedTodos = todoService.sort(fetchedTodos, 'date-asc')
+            setTodos(fetchedTodos)
+            setOriginalTodos(fetchedTodos)
 
             resolve(true)
           } catch (err) {
@@ -149,10 +150,11 @@ function App() {
       />
 
       <AppContainer>
-        <Header todos={originalTodos} setTodos={setTodos} />
+        <Header todos={originalTodos} setTodos={setTodos} viewMode={viewMode} setViewMode={setViewMode} />
 
         <main>
           <TodoList
+            viewMode={viewMode}
             todos={todos}
             onEdit={handleSelectTodo}
             onDelete={handleDeleteTodo}
