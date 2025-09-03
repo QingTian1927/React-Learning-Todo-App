@@ -64,9 +64,9 @@ export default function TodoList({
           onClick={() => {
             setShowInputForm(true)
           }}
-          className='group border-pastel-turquoise hover:border-pastel-teal-dark flex min-h-40 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-5'
+          className='group border-pastel-turquoise hover:border-pastel-teal-dark flex min-h-40 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed p-5 transition-colors duration-200 ease-in-out'
         >
-          <span className='text-pastel-turquoise group-hover:text-pastel-teal-dark text-4xl font-bold'>
+          <span className='text-pastel-turquoise group-hover:text-pastel-teal-dark text-4xl font-bold transition-colors duration-200 ease-in-out'>
             <i className='bi bi-plus-lg'></i>
           </span>
         </button>

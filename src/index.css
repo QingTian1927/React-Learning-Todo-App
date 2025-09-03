@@ -16,7 +16,7 @@
 }
 
 html {
-  @apply caret-pastel-turquoise selection:bg-pastel-turquoise box-border;
+  @apply caret-pastel-turquoise selection:bg-pastel-turquoise selection:text-pastel-white box-border;
 }
 
 input {

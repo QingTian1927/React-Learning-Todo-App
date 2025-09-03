@@ -86,7 +86,11 @@ export default function TodoItem({ todo, onDelete, onEdit, onToggleStatus, setSh
       </header>
 
       <div className='grow'>
-        {showDetails && <p className='mb-5 whitespace-pre'>{todo.description}</p>}
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${showDetails ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
+        >
+          <p className='mb-5 whitespace-pre'>{todo.description}</p>
+        </div>
 
         <div className='flex flex-wrap items-center justify-start gap-2'>
           {todo.tags.map((tag) => (

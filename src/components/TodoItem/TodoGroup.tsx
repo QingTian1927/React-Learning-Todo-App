@@ -65,7 +65,7 @@ export default function TodoGroup({
           </span>
           <button
             onClick={handleShowGroup}
-            className='hover:bg-pastel-white h-full cursor-pointer rounded-md px-2 py-1'
+            className='hover:bg-pastel-white h-full cursor-pointer rounded-md px-2 py-1 transition-colors duration-200 ease-in-out'
           >
             {showGroup ? (
               <i className='bi bi-chevron-up text-pastel-gray-dark'></i>
@@ -82,20 +82,24 @@ export default function TodoGroup({
         ></span>
       </header>
 
-      {showGroup && (
-        <div className='flex flex-col gap-3'>
-          {(todos as Todo[]).map((todo) => (
+      {/* Animated expand/collapse */}
+      <div
+        className={`flex flex-col gap-3 overflow-hidden transition-all duration-300 ease-in-out ${
+          showGroup ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        {(todos as Todo[]).map((todo) => (
+          <div key={todo.id} className='animate-fade-in'>
             <TodoItem
-              key={todo.id}
               todo={todo}
               onDelete={onDelete}
               onEdit={onEdit}
               setShowInputForm={setShowInputForm}
               onToggleStatus={onToggleStatus}
             />
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

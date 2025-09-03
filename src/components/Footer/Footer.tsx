@@ -12,14 +12,14 @@ export default function Footer({ todoCount }: FooterProps) {
       <h3 className='font-medium'>Shrimo Todo</h3>
 
       <div className='flex items-center justify-end gap-2 font-medium'>
-        <div className='border-pastel-teal-medium bg-pastel-teal-light text-pastel-teal-dark rounded-full border px-3 py-1'>
+        <div className='border-pastel-teal-medium bg-pastel-teal-light text-pastel-teal-dark cursor-default rounded-full border px-3 py-1 select-none'>
           <span className='mr-2'>Tasks:</span>
           <span>{todoCount}</span>
         </div>
 
         <div
           className={
-            'flex items-center gap-2 rounded-full px-3 py-1 ' +
+            'flex cursor-default items-center gap-2 rounded-full px-3 py-1 select-none ' +
             (isOnline ? 'bg-pastel-turquoise text-pastel-white' : 'bg-pastel-pink text-pastel-white')
           }
         >

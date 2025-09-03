@@ -9,8 +9,9 @@ type ViewSwitcherProps = {
 }
 
 export default function ViewSwitcher({ viewMode = 'grid', setViewMode, showAll, setShowAll }: ViewSwitcherProps) {
-  const inactiveStyling = 'hover:text-pastel-turquoise cursor-pointer'
-  const activeStyling = 'bg-pastel-turquoise text-pastel-white cursor-default'
+  const inactiveStyling = 'hover:text-pastel-turquoise cursor-pointer transition-colors duration-200 ease-in-out'
+  const activeStyling =
+    'bg-pastel-turquoise text-pastel-white cursor-default transition-colors duration-200 ease-in-out'
 
   function handleChangeView(value: ViewMode) {
     setViewMode(value)
@@ -44,7 +45,7 @@ export default function ViewSwitcher({ viewMode = 'grid', setViewMode, showAll, 
       {viewMode === 'list' && (
         <button
           onClick={handleShowAll}
-          className='bg-pastel-white text-pastel-gray-dark hover:text-pastel-turquoise cursor-pointer rounded-full px-3.5 py-1 text-lg'
+          className='bg-pastel-white text-pastel-gray-dark hover:text-pastel-turquoise cursor-pointer rounded-full px-3.5 py-1 text-lg transition-colors duration-200 ease-in-out'
         >
           {showAll ? <i className='bi bi-chevron-double-up'></i> : <i className='bi bi-chevron-double-down'></i>}
         </button>

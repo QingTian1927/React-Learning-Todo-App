@@ -73,7 +73,7 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <div className='flex items-center gap-2'>
+      <div className='flex flex-wrap items-center gap-2'>
         <select
           onChange={(e) => setStatusFilter(e.target.value)}
           className={
