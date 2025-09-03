@@ -77,12 +77,14 @@ function App() {
         if (todo.id !== '') {
           const updatedTodo = await todoService.update(id, todoData, isOnline)
           setTodos((prev) => prev.map((oldTodo) => (oldTodo.id === id ? { ...updatedTodo, id } : oldTodo)))
-          return true
-        } else {
-          const newTodo = await todoService.create(todoData, isOnline)
-          setTodos((prev) => [newTodo, ...prev])
+          setTodos((prev) => todoService.sort(prev, 'date-asc'))
           return true
         }
+
+        const newTodo = await todoService.create(todoData, isOnline)
+        setTodos((prev) => [newTodo, ...prev])
+        setTodos((prev) => todoService.sort(prev, 'date-asc'))
+        return true
       })()
 
       await toast.promise(promise, {
@@ -120,6 +122,7 @@ function App() {
         setCurrentTodo(null)
       }
       setTodos((prev) => prev.filter((todo) => todo.id !== id))
+      setTodos((prev) => todoService.sort(prev, 'date-asc'))
 
       result = true
     } catch (err) {
