@@ -76,7 +76,9 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
       <div className='flex items-center gap-2'>
         <select
           onChange={(e) => setStatusFilter(e.target.value)}
-          className={'rounded-full border-2 px-3 py-2 font-medium outline-none ' + getStatusColor(statusFilter)}
+          className={
+            'cursor-pointer rounded-full border-2 px-3 py-2 font-medium outline-none ' + getStatusColor(statusFilter)
+          }
         >
           <option value='' className='bg-pastel-white text-pastel-gray-dark'>
             Filter by Status
@@ -90,7 +92,10 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
 
         <select
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className={'rounded-full border-2 px-3 py-2 font-medium outline-none ' + getPriorityColor(priorityFilter)}
+          className={
+            'cursor-pointer rounded-full border-2 px-3 py-2 font-medium outline-none ' +
+            getPriorityColor(priorityFilter)
+          }
         >
           <option value='' className='bg-pastel-white text-pastel-gray-dark'>
             Filter by Priority
