@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { type Priority, type Status, statuses, type Todo } from '../../types/Todo'
+import { isOverdue } from '../../utils/dateUtils'
 
 type TodoItemProps = {
   todo: Todo
@@ -11,16 +12,6 @@ type TodoItemProps = {
 
 function formatTime(date?: Date): string {
   return new Intl.DateTimeFormat('en-UK').format(date)
-}
-
-function isOverdue(dueDate: Date): boolean {
-  const now = new Date()
-
-  // Reset time part to 00:00:00 for both dates
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const due = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate())
-
-  return today > due
 }
 
 function getStatusColor(status: Status): string {

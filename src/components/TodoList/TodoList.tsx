@@ -8,7 +8,9 @@ type TodoListProps = {
   onEdit: (todo?: Todo) => void
   onToggleStatus: (todo: Todo) => Promise<boolean>
   setShowInputForm: React.Dispatch<React.SetStateAction<boolean>>
+
   viewMode: ViewMode
+  showAll: boolean
 
   // 2-level props passing. props are completely unused here
   // this ain't good
@@ -34,7 +36,8 @@ export default function TodoList({
   onDelete,
   onToggleStatus,
   setShowInputForm,
-  viewMode
+  viewMode,
+  showAll
 }: TodoListProps) {
   let todoGroups = {}
   if (viewMode === 'list') {
@@ -83,6 +86,7 @@ export default function TodoList({
         {viewMode === 'list' &&
           Object.entries(todoGroups).map(([date, todos]) => (
             <TodoGroup
+              defaultShow={showAll}
               key={date}
               date={date}
               todos={todos as Todo[]}

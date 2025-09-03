@@ -19,6 +19,7 @@ function App() {
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null)
   const [showInputForm, setShowInputForm] = useState(false)
   const [viewMode, setViewMode] = useState<ViewMode>(availableViewModes[0])
+  const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
     function fetchTodos() {
@@ -150,11 +151,19 @@ function App() {
       />
 
       <AppContainer>
-        <Header todos={originalTodos} setTodos={setTodos} viewMode={viewMode} setViewMode={setViewMode} />
+        <Header
+          todos={originalTodos}
+          setTodos={setTodos}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          showAll={showAll}
+          setShowAll={setShowAll}
+        />
 
         <main>
           <TodoList
             viewMode={viewMode}
+            showAll={showAll}
             todos={todos}
             onEdit={handleSelectTodo}
             onDelete={handleDeleteTodo}

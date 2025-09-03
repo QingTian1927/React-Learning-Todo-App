@@ -11,9 +11,12 @@ type HeaderProps = {
 
   viewMode: ViewMode
   setViewMode: React.Dispatch<SetStateAction<ViewMode>>
+
+  showAll: boolean
+  setShowAll: React.Dispatch<SetStateAction<boolean>>
 }
 
-export default function Header({ todos, setTodos, viewMode, setViewMode }: HeaderProps) {
+export default function Header({ todos, setTodos, viewMode, setViewMode, showAll, setShowAll }: HeaderProps) {
   const [currentTime, setCurrentTime] = useState(new Date())
 
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function Header({ todos, setTodos, viewMode, setViewMode }: Heade
   return (
     <header className='mb-5 grid min-h-[10svh] w-full grid-cols-1 items-center justify-between gap-5 rounded-md xl:grid-cols-2'>
       <HeaderTitle time={currentTime} />
-      <ViewSwitcher viewMode={viewMode} setViewMode={setViewMode} />
+      <ViewSwitcher viewMode={viewMode} setViewMode={setViewMode} showAll={showAll} setShowAll={setShowAll} />
       <FilterBar originalTodos={todos} setTodos={setTodos} />
     </header>
   )
