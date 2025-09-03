@@ -7,6 +7,34 @@ type FilterBarProps = {
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
+function getStatusColor(status: string): string {
+  switch (status) {
+    case 'Not Started':
+      return 'bg-pastel-teal-medium text-pastel-teal-dark border-pastel-teal-dark'
+    case 'In Progress':
+      return 'bg-pastel-pink text-pastel-white border-pastel-pink'
+    case 'Completed':
+      return 'bg-pastel-turquoise text-pastel-white border-pastel-turquoise'
+    default:
+      return 'bg-pastel-cream text-pastel-gray-dark border-pastel-gray-medium'
+  }
+}
+
+function getPriorityColor(priority: string): string {
+  switch (priority) {
+    case 'Low':
+      return 'bg-pastel-cream border-pastel-teal-dark text-pastel-teal-dark'
+    case 'Medium':
+      return 'bg-pastel-teal-medium border-pastel-teal-dark text-pastel-teal-dark'
+    case 'High':
+      return 'bg-pastel-pink border-pastel-pink text-pastel-white'
+    case 'Critical':
+      return 'bg-red-400 border-red-400 text-pastel-white'
+    default:
+      return 'bg-pastel-cream text-pastel-gray-dark border-pastel-gray-medium'
+  }
+}
+
 export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
@@ -48,11 +76,13 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
       <div className='flex items-center gap-2'>
         <select
           onChange={(e) => setStatusFilter(e.target.value)}
-          className='text-pastel-white bg-pastel-turquoise border-pastel-turquoise rounded-full border-2 px-3 py-2 font-medium'
+          className={'rounded-full border-2 px-3 py-2 font-medium outline-none ' + getStatusColor(statusFilter)}
         >
-          <option value=''>Filter by Status</option>
+          <option value='' className='bg-pastel-white text-pastel-gray-dark'>
+            Filter by Status
+          </option>
           {statuses.map((status) => (
-            <option key={status} value={status}>
+            <option key={status} value={status} className='bg-pastel-white text-pastel-gray-dark'>
               {status}
             </option>
           ))}
@@ -60,11 +90,13 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
 
         <select
           onChange={(e) => setPriorityFilter(e.target.value)}
-          className='text-pastel-white bg-pastel-turquoise border-pastel-turquoise rounded-full border-2 px-3 py-2 font-medium'
+          className={'rounded-full border-2 px-3 py-2 font-medium outline-none ' + getPriorityColor(priorityFilter)}
         >
-          <option value=''>Filter by Priority</option>
+          <option value='' className='bg-pastel-white text-pastel-gray-dark'>
+            Filter by Priority
+          </option>
           {priorities.map((priority) => (
-            <option key={priority} value={priority}>
+            <option key={priority} value={priority} className='bg-pastel-white text-pastel-gray-dark'>
               {priority}
             </option>
           ))}
