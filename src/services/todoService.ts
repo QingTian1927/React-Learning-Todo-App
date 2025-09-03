@@ -6,6 +6,33 @@ import { offlineService } from './offlineService'
 
 const BASE_URL = 'https://shrimo.com/fake-api/todos'
 
+function ascendingDateComparison(a: Todo, b: Todo): number {
+  const firstDate = a.dueDate
+  const secondDate = b.dueDate
+
+  if (!firstDate) {
+    return -1
+  }
+  if (!secondDate) {
+    return 1
+  }
+
+  if (firstDate > secondDate) {
+    return 1
+  }
+  if (firstDate < secondDate) {
+    return -1
+  }
+  return 0
+}
+
+export const todoSortMethods = {
+  'date-asc': (a: Todo, b: Todo): number => ascendingDateComparison(a, b),
+  'date-desc': (a: Todo, b: Todo): number => -ascendingDateComparison(a, b)
+}
+
+export type TodoSort = keyof typeof todoSortMethods
+
 export interface ApiResponse<T> {
   message: string
   data: T
@@ -173,11 +200,18 @@ function filterPriority(todos: Todo[], priority: string) {
   return todos.filter((todo) => todo.priority === priority)
 }
 
+function sort(todos: Todo[], type: TodoSort): Todo[] {
+  const sorted = [...todos]
+  sorted.sort(todoSortMethods[type])
+  return sorted
+}
+
 export const todoService = {
   get: getTodos,
   create: createTodo,
   delete: deleteTodo,
   update: updateTodo,
+  sort: sort,
   searchText: searchText,
   filterStatus: filterStatus,
   filterPriority: filterPriority

@@ -9,46 +9,31 @@ type FilterBarProps = {
 
 export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
   const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
   const [priorityFilter, setPriorityFilter] = useState('')
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (searchTerm === '') {
-        setTodos(originalTodos)
-        return
+      let filtered = [...originalTodos]
+
+      if (searchTerm) {
+        filtered = todoService.searchText(filtered, searchTerm)
       }
 
-      const filtered = todoService.searchText([...originalTodos], searchTerm)
+      if (statusFilter) {
+        filtered = todoService.filterStatus(filtered, statusFilter)
+      }
+
+      if (priorityFilter) {
+        filtered = todoService.filterPriority(filtered, priorityFilter)
+      }
+
       console.log({ filtered })
       setTodos(filtered)
     }, 500)
 
     return () => clearTimeout(handler)
-  }, [searchTerm, setTodos, originalTodos])
-
-  function handleFilterStatus(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value
-    if (!value) {
-      setTodos(originalTodos)
-      return
-    }
-
-    const filtered = todoService.filterStatus([...originalTodos], value)
-    console.log({ filtered })
-    setTodos(filtered)
-  }
-
-  function handleFilterPriority(e: React.ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value
-    if (!value) {
-      setTodos(originalTodos)
-      return
-    }
-
-    const filtered = todoService.filterPriority([...originalTodos], value)
-    console.log({ filtered })
-    setTodos(filtered)
-  }
+  }, [searchTerm, setTodos, originalTodos, statusFilter, priorityFilter])
 
   return (
     <div className='flex w-full flex-wrap items-stretch justify-end gap-2'>
@@ -62,7 +47,7 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
 
       <div className='flex items-center gap-2'>
         <select
-          onChange={handleFilterStatus}
+          onChange={(e) => setStatusFilter(e.target.value)}
           className='text-pastel-white bg-pastel-turquoise border-pastel-turquoise rounded-full border-2 px-3 py-2 font-medium'
         >
           <option value=''>Filter by Status</option>
@@ -74,7 +59,7 @@ export default function FilterBar({ originalTodos, setTodos }: FilterBarProps) {
         </select>
 
         <select
-          onChange={handleFilterPriority}
+          onChange={(e) => setPriorityFilter(e.target.value)}
           className='text-pastel-white bg-pastel-turquoise border-pastel-turquoise rounded-full border-2 px-3 py-2 font-medium'
         >
           <option value=''>Filter by Priority</option>

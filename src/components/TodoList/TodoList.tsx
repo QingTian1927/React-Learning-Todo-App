@@ -83,6 +83,7 @@ export default function TodoList({
         {viewMode === 'list' &&
           Object.entries(todoGroups).map(([date, todos]) => (
             <TodoGroup
+              key={date}
               date={date}
               todos={todos as Todo[]}
               onEdit={onEdit}
